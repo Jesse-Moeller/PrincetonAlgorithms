@@ -2,8 +2,8 @@ import edu.princeton.cs.algs4.StdDraw;
 
 public class BouncingBall {
    public static void main(String[] args) {
-        StdDraw.setXscale(-1,1);
-        StdDraw.setYscale(-1,1);
+        StdDraw.setXscale(-1.05,1.05);
+        StdDraw.setYscale(-1.05,1.05);
         StdDraw.enableDoubleBuffering();
         double x = Math.random();
         double y = Math.random();
@@ -14,15 +14,21 @@ public class BouncingBall {
         yvelocity/=20*norm;
         while(true){
             StdDraw.setPenColor(StdDraw.WHITE);
-            StdDraw.filledSquare(0, 0, 1);
+            StdDraw.filledSquare(0, 0, 1.05);
             StdDraw.setPenColor(StdDraw.BLACK);
             StdDraw.filledCircle(x, y, 0.05);
             StdDraw.show();
             StdDraw.pause(20);
-            if (Math.abs(x + xvelocity) > 1.0 - 0.05) xvelocity *= -1;
-            if (Math.abs(y + yvelocity) > 1.0 - 0.05) yvelocity *= -1;
             x+=xvelocity;
             y+=yvelocity;
+            if(Math.abs(x)>1){
+                xvelocity*=-1;
+                if(x>0) x = 2 - x; else x = -2-x;
+            }
+            if(Math.abs(y)>1){
+                yvelocity*=-1;
+                if(y>0) y = 2 - y; else y = -2-y;
+            }
        }
    } 
 }
