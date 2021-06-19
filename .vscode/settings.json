@@ -5,6 +5,7 @@
     ],
     "java.project.sourcePaths": [
         "BookExercises/1.1",
-        "CourseraAssignments/hello"
+        "CourseraAssignments/hello",
+        "Notes"
     ]
 }
