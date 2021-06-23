@@ -52,15 +52,20 @@ public class Percolation {
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         if (!isOpen(row, col)) {
+
+            // get the index of current node for WFU/status array lookup
             int currentidx = this.getIdx(row, col);
 
+            // modify the status to be open
             this.siteStatus[currentidx][0] = true;
 
             int neighbors[][] = { {row-1, col}, {row+1, col}, {row, col-1}, {row, col+1} };
 
+            // we suppose the neighbors are not connected to top or bottom until proven otherwise
             boolean nbsConnectToTop = false;
             boolean nbsConnectToBot = false;
 
+            // gather evidence and change those variables if counterexamples arise
             for (int i = 0; i<4; i++) {
                 int nRow = neighbors[i][0];
                 int nCol = neighbors[i][1];
@@ -76,16 +81,7 @@ public class Percolation {
                 }
             }
 
-            if (nbsConnectToTop || row == 1) {
-                this.connectToTop(currentidx);
-                this.siteStatus[currentidx][1] = true;
-            }
-
-            if (nbsConnectToBot || row == this.size) {
-                this.connectToBot(currentidx);
-                this.siteStatus[currentidx][2] = true;
-            }
-
+            // Go back to the neighbors and make connections.
             for (int i = 0; i<4; i++) {
                 int nRow = neighbors[i][0];
                 int nCol = neighbors[i][1];
@@ -93,17 +89,25 @@ public class Percolation {
                     int neighboridx = this.getIdx(nRow, nCol);
                     if (this.siteStatus[neighboridx][0]) {
                         this.connections.union(neighboridx, currentidx);
-                        if (this.siteStatus[currentidx][1]) {
-                            this.connectToTop(neighboridx);
-                        }
-                        if (this.siteStatus[currentidx][2]) {
-                            this.connectToBot(neighboridx);
-                        }
                     }
                  }
             }
 
-            if (this.connectedToTop(currentidx) && this.connectedToBot(currentidx)) {
+            // if the neighbors were originally connected to the top, or if you're just in the top row, then we connect to the top.
+            // note that this has the effect of changing the full status of the neighbors, too.
+            if (nbsConnectToTop || row == 1) {
+                this.connectToTop(currentidx);
+            }
+
+            // ditto for the bottom
+            if (nbsConnectToBot || row == this.size) {
+                this.connectToBot(currentidx);
+            }
+
+            // detect percolation
+            // note that this works, you're only connected to the top if either you're already at the top, or your neighbors are connected to the top.
+            // (and, similarly, same for connecting to the bottom)
+            if ( (nbsConnectToTop || row == 1) && (nbsConnectToBot || row == this.size) ) {
                 this.percolates = true;
             }
 
