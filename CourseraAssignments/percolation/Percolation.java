@@ -13,7 +13,7 @@ public class Percolation {
         if (n > 0) {
             this.connections = new WeightedQuickUnionUF(n * n);
             this.size = n;
-            // (i,j) , (isopen, connectedToTop, connectedTobBttom)
+            // (i,j) , (isopen, connectedToTop, connectedToBot)
             this.siteStatus = new boolean[n * n][3];
             this.numberOpenSites = 0;
         }
@@ -30,65 +30,83 @@ public class Percolation {
         return (row >= 1) && (col >= 1) && (row <= this.size) && (col <= this.size);
     }
 
-    private boolean isConnectedToTop(int idx) {
+    private void connectToTop(int idx){
+        int rootidx = this.connections.find(idx);
+        this.siteStatus[rootidx][1] = true;
+    }
+    private void connectToBot(int idx){
+        int rootidx = this.connections.find(idx);
+        this.siteStatus[rootidx][2] = true;
+    }
+
+    private boolean connectedToTop(int idx) {
         int rootidx = this.connections.find(idx);
         return this.siteStatus[rootidx][1];
     }
 
-    private boolean isConnectedToBot(int idx) {
+    private boolean connectedToBot(int idx) {
         int rootidx = this.connections.find(idx);
         return this.siteStatus[rootidx][2];
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
-        if (isValidRowCol(row, col)) {
-            if (!isOpen(row, col)) {
-                int currentidx = getIdx(row, col);
-                this.siteStatus[currentidx][0] = true;
-                this.numberOpenSites++;
+        if (!isOpen(row, col)) {
+            int currentidx = this.getIdx(row, col);
 
-                if (row == 1) {
-                    this.siteStatus[currentidx][1] = true;
-                }
+            this.siteStatus[currentidx][0] = true;
 
-                if (row == this.size) {
-                    this.siteStatus[currentidx][2] = true;
-                }
+            int neighbors[][] = { {row-1, col}, {row+1, col}, {row, col-1}, {row, col+1} };
 
-                if (isValidRowCol(row - 1, col) && isOpen(row - 1, col)) {
-                    int leftidx = getIdx(row-1, col);
-                    this.siteStatus[currentidx][1] = this.siteStatus[currentidx][1] || isConnectedToTop(leftidx);
-                    this.siteStatus[currentidx][2] = this.siteStatus[currentidx][2] || isConnectedToBot(leftidx);
-                    this.connections.union(currentidx, leftidx);
-                }
-                
-                if (isValidRowCol(row + 1, col) && isOpen(row + 1, col)) {
-                    int rightidx = getIdx(row+1, col);
-                    this.siteStatus[currentidx][1] = this.siteStatus[currentidx][1] || isConnectedToTop(rightidx);
-                    this.siteStatus[currentidx][2] = this.siteStatus[currentidx][2] || isConnectedToBot(rightidx);
-                    this.connections.union(currentidx, rightidx);
-                }
-                
-                if (isValidRowCol(row, col - 1) && isOpen(row, col - 1)) {
-                    int upidx = getIdx(row, col-1);
-                    this.siteStatus[currentidx][1] = this.siteStatus[currentidx][1] || isConnectedToTop(upidx);
-                    this.siteStatus[currentidx][2] = this.siteStatus[currentidx][2] || isConnectedToBot(upidx);
-                    this.connections.union(currentidx, upidx);
-                }
+            boolean nbsConnectToTop = false;
+            boolean nbsConnectToBot = false;
 
-                if (isValidRowCol(row, col + 1) && isOpen(row, col + 1)) {
-                    int downidx = getIdx(row, col+1);
-                    this.siteStatus[currentidx][1] = this.siteStatus[currentidx][1] || isConnectedToTop(downidx);
-                    this.siteStatus[currentidx][2] = this.siteStatus[currentidx][2] || isConnectedToBot(downidx);
-                    this.connections.union(currentidx, downidx);
-                }
+            for (int i = 0; i<4; i++) {
+                int nRow = neighbors[i][0];
+                int nCol = neighbors[i][1];
+                if (this.isValidRowCol(nRow, nCol)) {
+                    int neighboridx = this.getIdx(nRow, nCol);
+                    if (this.connectedToTop(neighboridx)) {
+                        nbsConnectToTop = true;
+                    }
 
-                this.percolates = this.percolates || (this.siteStatus[currentidx][1] && this.siteStatus[currentidx][2]);
+                    if (this.connectedToBot(neighboridx)) {
+                        nbsConnectToBot = true;
+                    }
+                }
             }
-        }
-        else {
-            throw new IllegalArgumentException();
+
+            if (nbsConnectToTop || row == 1) {
+                this.connectToTop(currentidx);
+                this.siteStatus[currentidx][1] = true;
+            }
+
+            if (nbsConnectToBot || row == this.size) {
+                this.connectToBot(currentidx);
+                this.siteStatus[currentidx][2] = true;
+            }
+
+            for (int i = 0; i<4; i++) {
+                int nRow = neighbors[i][0];
+                int nCol = neighbors[i][1];
+                if (this.isValidRowCol(nRow, nCol)) {
+                    int neighboridx = this.getIdx(nRow, nCol);
+                    if (this.siteStatus[neighboridx][0]) {
+                        this.connections.union(neighboridx, currentidx);
+                        if (this.siteStatus[currentidx][1]) {
+                            this.connectToTop(neighboridx);
+                        }
+                        if (this.siteStatus[currentidx][2]) {
+                            this.connectToBot(neighboridx);
+                        }
+                    }
+                 }
+            }
+
+            if (this.connectedToTop(currentidx) && this.connectedToBot(currentidx)) {
+                this.percolates = true;
+            }
+
         }
     }
 
@@ -104,8 +122,8 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (isValidRowCol(row, col)) {
-            return (isOpen(row, col) && isConnectedToTop(getIdx(row, col)));
+        if (isValidRowCol(row,col)) {
+            return this.connectedToTop(getIdx(row, col));
         }
         else {
             throw new IllegalArgumentException();
