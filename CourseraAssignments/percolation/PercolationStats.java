@@ -44,6 +44,9 @@ public class PercolationStats {
     }
     
     public static void main(String[] args) {
+        if (args.length < 2) {
+            throw new IllegalArgumentException();
+        }
         int n = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
         PercolationStats myExperiment = new PercolationStats(n, trials);
