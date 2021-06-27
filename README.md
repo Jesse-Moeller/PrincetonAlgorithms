@@ -3,4 +3,8 @@
 
  I have placed algs4.jar into my local location C:\Users\{me}\algs4\algs4.jar"
 
- and I have added "C:\Users\{me}\algs4\algs4.jar" to my global variable CLASSPATH
+
+To reproduce:
+
+Install >= Java SKD 11
+add ".\algs4\algs4.jar" to the global variable CLASSPATH
