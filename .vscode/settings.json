@@ -4,9 +4,9 @@
         "algs4\\algs4.jar"
     ],
     "java.project.sourcePaths": [
-        "BookExercises/1.1",
-        "CourseraAssignments/hello",
+        "Exercises/Week1",
         "CourseraAssignments/percolation",
-        "Notes"
+        "CourseraAssignments/hello",
+        "Exercises/Week2"
     ]
 }

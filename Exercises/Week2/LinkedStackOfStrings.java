@@ -29,8 +29,7 @@ public class LinkedStackOfStrings {
     public static void main(String[] args) {
         LinkedStackOfStrings myStack = new LinkedStackOfStrings();
         for (int i = 0; i < args.length; i++) {
-            if (args[i].strip() == "-") {
-                StdOut.println("its poppin");
+            if (args[i].equals("-")) {
                 myStack.pop();
             }
             else {
