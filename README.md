@@ -7,7 +7,9 @@ Environment:
 
 Execution:
 1. Navigate to ./CourseraAssignments/{assignment} according to your interest
-2. if {assignment}.class is not present, run javac {assignment}.java
-3. run java {assignment}
+2. if {assignment}.class is not present, run <code>javac {assignment}.java</code> to compile
+3. run <code>java {assignment}</code> to see execution of main method in {assignment}
+4. Note: For programs that read in Standard Input, if you want to test the files provided by Princeton for unit testing, you need to pipe.
+  a. Windows: <code>cat .\tests\duplicates.txt | java Permutation 3</code>
+  b. Unix: <code> java Permutation 3 < .\tests\duplicates.txt</code>
 
-This will produce output from the main method of the {assignment} class (most likely whatever unit tests I was doing before submitting)
