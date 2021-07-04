@@ -1,5 +1,5 @@
 # PrincetonAlgorithms
- My exercises and assigments while taking Princeton's algorithms course on Coursera.
+ This repository contains my solutions to exercises and assigments sourced from Princeton's Algorithms & Data Structures course.
 
 Environment:
 1. Install >= Java SKD 11
