@@ -81,6 +81,13 @@ public class Deque<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
+        else if (size == 1) {
+            size--;
+            Item item = first.item;
+            last = null;
+            first = null;
+            return item;
+        }
         else {
             size--;
             Item item = first.item;
@@ -93,6 +100,13 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
         if (size == 0) {
             throw new NoSuchElementException();
+        }
+        else if (size == 1) {
+            size--;
+            Item item = last.item;
+            last = null;
+            first = null;
+            return item;
         }
         else {
             size--;
@@ -111,8 +125,10 @@ public class Deque<Item> implements Iterable<Item> {
         private Node current = first;
 
         public boolean hasNext() { return current != null; }
-        public Item next()
-        {
+        public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             Item item = current.item;
             current = current.previous;
             return item;
@@ -153,31 +169,40 @@ public class Deque<Item> implements Iterable<Item> {
         StdOut.println(myDeque.removeLast());
         StdOut.println("testing size of Deque ...");
         StdOut.println(myDeque.size());
+        StdOut.println("Recompute Iterator, test hasNext() and next() ...");
+        myIterator = myDeque.iterator();
+        StdOut.println(myIterator.hasNext());
+        try {
+            StdOut.println(myIterator.next());
+        }
+        catch(NoSuchElementException e) {
+            StdOut.println("Caught exception for next().");
+        }
 
         // test exceptions
         try {
             myDeque.addFirst(null);
         }
         catch(IllegalArgumentException e) {
-            StdOut.println("addFirst exception caught");
+            StdOut.println("Caught exception for addFirst().");
         }
         try {
             myDeque.addLast(null);
         }
         catch(IllegalArgumentException e) {
-            StdOut.println("addFirst exception caught");
+            StdOut.println("Caught exception for addLast().");
         }
         try {
             myDeque.removeFirst();
         }
         catch(NoSuchElementException e) {
-            StdOut.println("removeFirst exception caught");
+            StdOut.println("Caught exception for removeFirst().");
         }
         try {
             myDeque.removeLast();
         }
         catch(NoSuchElementException e) {
-            StdOut.println("removeLast exception caught");
+            StdOut.println("Caught exception for removeLast().");
         }
     }
 
