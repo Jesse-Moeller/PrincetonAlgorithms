@@ -1,5 +1,21 @@
 import edu.princeton.cs.algs4.*;
 
 public class Permutation {
-    public static void main(String[] args)
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        int k = Integer.parseInt(args[0]);
+        if (k == 0) {
+            return;
+        }
+
+        RandomizedQueue<String> myRandomizedQueue = new RandomizedQueue<String>();
+        while (!StdIn.isEmpty()) {
+            myRandomizedQueue.enqueue(StdIn.readString());
+        }
+        for (int i = 0; i < k; i++) {
+            StdOut.println(myRandomizedQueue.dequeue());
+        }
+    }
  }
