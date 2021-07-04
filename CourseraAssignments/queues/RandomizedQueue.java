@@ -1,12 +1,17 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
-import edu.princeton.cs.algs4.*;
-
-public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
+public class RandomizedQueue<Item> implements Iterable<Item> {
     private int size;
     private Item[] array;
     private int head = 0;
+
+    // construct an empty randomized queue
+    public RandomizedQueue() {
+        array = (Item[]) new Object[1];
+    }
 
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
@@ -14,11 +19,6 @@ public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
             copy[i] = array[i];
         }
         array = copy;
-    }
-
-    // construct an empty randomized queue
-    public RandomizedQueue() {
-        array = (Item[]) new Object[1];
     }
 
     // is the randomized queue empty?
@@ -68,7 +68,7 @@ public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
-        private Item[] iteratorArray;
+        private final Item[] iteratorArray;
         private int iteratorSize;
 
         public RandomizedQueueIterator() {
@@ -98,7 +98,7 @@ public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
     public static void main(String[] args) {
         // test basic functionality
         StdOut.println("Creating RandomizedQueue, checking isEmpty(), checking size() ...");
-        RandomizedQueue<String> myRandomizedQueue= new RandomizedQueue<String>();
+        RandomizedQueue<String> myRandomizedQueue = new RandomizedQueue<String>();
         StdOut.println(myRandomizedQueue.isEmpty());
         StdOut.println(myRandomizedQueue.size());
         StdOut.println("Four calls to enqueue() ...");
@@ -141,7 +141,7 @@ public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
         try {
             StdOut.println(myIterator.next());
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             StdOut.println("Caught exception for next().");
         }
 
@@ -149,19 +149,19 @@ public class RandomizedQueue<Item> /*implements Iterable<Item>*/ {
         try {
             myRandomizedQueue.enqueue(null);
         }
-        catch(IllegalArgumentException e) {
+        catch (IllegalArgumentException e) {
             StdOut.println("Caught exception for enqueue().");
         }
         try {
             myRandomizedQueue.dequeue();
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             StdOut.println("Caught exception for dequeue().");
         }
         try {
             myRandomizedQueue.sample();
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             StdOut.println("Caught exception for sample().");
         }
 

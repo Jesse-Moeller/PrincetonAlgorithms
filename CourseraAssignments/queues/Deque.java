@@ -1,7 +1,6 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -183,25 +182,25 @@ public class Deque<Item> implements Iterable<Item> {
         try {
             myDeque.addFirst(null);
         }
-        catch(IllegalArgumentException e) {
+        catch (IllegalArgumentException e) {
             StdOut.println("Caught exception for addFirst().");
         }
         try {
             myDeque.addLast(null);
         }
-        catch(IllegalArgumentException e) {
+        catch (IllegalArgumentException e) {
             StdOut.println("Caught exception for addLast().");
         }
         try {
             myDeque.removeFirst();
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             StdOut.println("Caught exception for removeFirst().");
         }
         try {
             myDeque.removeLast();
         }
-        catch(NoSuchElementException e) {
+        catch (NoSuchElementException e) {
             StdOut.println("Caught exception for removeLast().");
         }
     }
