@@ -5,9 +5,10 @@
     ],
     "java.project.sourcePaths": [
         "Exercises/Week1",
+        "Exercises/Week2",
+        "Exercises/Week3",
         "CourseraAssignments/percolation",
         "CourseraAssignments/hello",
-        "CourseraAssignments/queues",
-        "Exercises/Week2"
+        "CourseraAssignments/queues"
     ]
 }
