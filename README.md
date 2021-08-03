@@ -11,5 +11,5 @@ Execution:
 3. run <code>java {assignment}</code> to see execution of main method in {assignment}
 4. Some programs read in Standard Input. If you want use the unit test files make sure to pipe:
 
-<code>cat .\tests\duplicates.txt | java Permutation 3</code>  
+        <code>cat .\tests\duplicates.txt | java Permutation 3</code>  
 
